@@ -29,22 +29,24 @@ RUN apk add --no-cache --virtual .build-deps \
     git \
     python3-dev \
     postgresql-dev && \
-    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@4159b895fc1e3743777aadb79f1209735582cfab#subdirectory=packages/service-library &&\
-    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@4159b895fc1e3743777aadb79f1209735582cfab#subdirectory=packages/simcore-sdk &&\
-    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@4159b895fc1e3743777aadb79f1209735582cfab#subdirectory=services/storage/client-sdk/python &&\
-    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@4159b895fc1e3743777aadb79f1209735582cfab#subdirectory=packages/postgres-database &&\
+    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@master#subdirectory=packages/service-library &&\
+    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@master#subdirectory=packages/simcore-sdk &&\
+    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@master#subdirectory=services/storage/client-sdk/python &&\
+    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@master#subdirectory=packages/postgres-database &&\
+    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@master#subdirectory=packages/models-library &&\
     apk del --no-cache .build-deps
 
 
-RUN npm install express@4.16.4
+RUN npm install express
 
 # ----------------------------------------------------------------
 # set up oSparc env variables
 ENV SIMCORE_NODE_UUID="-1" \
     SIMCORE_USER_ID="-1" \
-    SIMCORE_NODE_BASEPATH="/tissue-properties" \
-    TISSUEPROPS_OUTPUT_PATH="../outputs" \
+    SIMCORE_NODE_BASEPATH="/raw" \
     STORAGE_ENDPOINT="=1" \
+    RAWGRAPHS_INPUT_PATH="../inputs" \
+    RAWGRAPHS_OUTPUT_PATH="../outputs" \
     S3_ENDPOINT="=1" \
     S3_ACCESS_KEY="-1" \
     S3_SECRET_KEY="-1" \
@@ -57,9 +59,17 @@ ENV SIMCORE_NODE_UUID="-1" \
 #-----------------Production----------------------
 FROM base AS production
 
-COPY --chown=scu:scu services/tissue-properties/csv-to-html-table $HOME/csv-to-html-table
-COPY --chown=scu:scu services/tissue-properties/inputs $HOME/inputs
-COPY --chown=scu:scu services/tissue-properties/inputs/TissueProperties.csv $HOME/csv-to-html-table/data/TissueProperties.csv
+# https://github.com/npm/uid-number/issues/3
+RUN npm config set unsafe-perm true
+
+ARG BRANCH_NAME
+RUN apk add --no-cache --virtual .build-deps \
+    git &&\
+    git clone https://github.com/ITISFoundation/raw.git --branch ${BRANCH_NAME} &&\
+    cd raw &&\
+    npm install -g bower &&\
+    bower install --force --allow-root &&\
+    apk del --no-cache .build-deps
 
 RUN apk add --no-cache \
     postgresql-libs
@@ -70,10 +80,10 @@ COPY --chown=scu:scu scripts/docker/healthcheck.py $HOME/healthcheck/healthcheck
 HEALTHCHECK --interval=10s --timeout=30s --start-period=1s --retries=3 CMD [ "python3", "/home/scu/healthcheck/healthcheck.py", "http://localhost:4000" ]
 
 WORKDIR $HOME
-COPY --chown=scu:scu services/tissue-properties/docker $HOME/docker
-COPY --chown=scu:scu services/tissue-properties/server $HOME/server
+COPY --chown=scu:scu services/raw-graphs/docker $HOME/docker
+COPY --chown=scu:scu services/raw-graphs/server $HOME/server
 
-WORKDIR $HOME/csv-to-html-table
+WORKDIR $HOME/raw
 CMD ["/bin/bash", "../docker/boot.sh"]
 
 #-----------------Development-----------------------
@@ -82,8 +92,9 @@ FROM base as development
 VOLUME $HOME/scripts
 VOLUME $HOME/services/storage/client-sdk
 
-VOLUME $HOME/csv-to-html-table
+VOLUME $HOME/raw
 VOLUME $HOME/docker
+VOLUME $HOME/inputs
 VOLUME $HOME/server
 VOLUME $HOME/devel
 
@@ -94,5 +105,5 @@ ENV CREATE_DUMMY_TABLE 1
 ENV USE_CASE_CONFIG_FILE="/home/scu/devel/port_config.json"
 ENV INIT_OPTIONS="50 6 1 tab"
 
-WORKDIR $HOME/csv-to-html-table
+WORKDIR $HOME/raw
 ENTRYPOINT ["/bin/bash", "../docker/boot.sh"]

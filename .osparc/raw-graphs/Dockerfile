@@ -29,15 +29,14 @@ RUN apk add --no-cache --virtual .build-deps \
     git \
     python3-dev \
     postgresql-dev && \
-    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@master#subdirectory=packages/service-library &&\
-    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@master#subdirectory=packages/simcore-sdk &&\
-    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@master#subdirectory=services/storage/client-sdk/python &&\
-    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@master#subdirectory=packages/postgres-database &&\
-    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@master#subdirectory=packages/models-library &&\
+    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@ba8279cc7927929c7aa96232bc3ce1fd6ea6be55#subdirectory=packages/service-library &&\
+    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@ba8279cc7927929c7aa96232bc3ce1fd6ea6be55#subdirectory=packages/simcore-sdk &&\
+    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@ba8279cc7927929c7aa96232bc3ce1fd6ea6be55#subdirectory=services/storage/client-sdk/python &&\
+    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@ba8279cc7927929c7aa96232bc3ce1fd6ea6be55#subdirectory=packages/postgres-database &&\
+    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@ba8279cc7927929c7aa96232bc3ce1fd6ea6be55#subdirectory=packages/models-library &&\
     apk del --no-cache .build-deps
 
-
-RUN npm install express
+RUN npm install express@4.16.4
 
 # ----------------------------------------------------------------
 # set up oSparc env variables
@@ -62,10 +61,10 @@ FROM base AS production
 # https://github.com/npm/uid-number/issues/3
 RUN npm config set unsafe-perm true
 
-ARG BRANCH_NAME
+
 RUN apk add --no-cache --virtual .build-deps \
     git &&\
-    git clone https://github.com/ITISFoundation/raw.git --branch ${BRANCH_NAME} &&\
+    git clone https://github.com/ITISFoundation/raw.git --branch master-osparc &&\
     cd raw &&\
     npm install -g bower &&\
     bower install --force --allow-root &&\
@@ -80,9 +79,9 @@ COPY --chown=scu:scu scripts/docker/healthcheck.py $HOME/healthcheck/healthcheck
 HEALTHCHECK --interval=10s --timeout=30s --start-period=1s --retries=3 CMD [ "python3", "/home/scu/healthcheck/healthcheck.py", "http://localhost:4000" ]
 
 WORKDIR $HOME
-COPY --chown=scu:scu services/dy-raw-graphs/docker $HOME/docker
-COPY --chown=scu:scu services/dy-raw-graphs/server $HOME/server
-
+COPY --chown=scu:scu services/raw-graphs/docker $HOME/docker
+COPY --chown=scu:scu services/raw-graphs/server $HOME/server
+ENV TEST_ENV="test"
 WORKDIR $HOME/raw
 CMD ["/bin/bash", "../docker/boot.sh"]
 
@@ -102,6 +101,7 @@ COPY --chown=scu /scripts/dy_services_helpers/requirements.txt $HOME/scripts/dy_
 RUN pip3 install -r $HOME/scripts/dy_services_helpers/requirements.txt
 
 ENV CREATE_DUMMY_TABLE 1
+
 ENV USE_CASE_CONFIG_FILE="/home/scu/devel/port_config.json"
 ENV INIT_OPTIONS="50 6 1 tab"
 

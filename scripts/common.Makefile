@@ -105,18 +105,6 @@ docker-compose.yml: guard-VERSION ## runs ooil to assemble the docker-compose.ym
 		bash -c "cd /mnt && ooil compose --metadata /mnt/.osparc --to-spec-file /mnt/docker-compose.yml"
 	@echo "----- </ooil output> -----"
 
-.PHONY: docker-compose.dev.yml
-docker-compose.dev.yml: ## runs ooil to assemble the docker-compose.yml file
-	@cd $(REPO_BASE_DIR) && $(VENV_BIN)/ooil compose --metadata .osparc --to-spec-file $(REPO_BASE_DIR)/docker-compose.dev.yml
-
 .PHONY: build
 build: | metadata.yml runtime.yml docker-compose.yml	## build docker image
 	@docker compose --file $(REPO_BASE_DIR)/docker-compose.yml build $(DOCKER_IMAGE_NAME)
-
-.PHONY: run-local
-run-local: | build-dev docker-compose.yml ## runs images with local configuration
-	@cd $(REPO_BASE_DIR) && docker compose --env-file $(REPO_BASE_DIR)/.osparc/$(DOCKER_IMAGE_NAME)/.env --file docker-compose.yml --file .osparc/$(DOCKER_IMAGE_NAME)/docker-compose.local.yml up --remove-orphans --force-recreate $(DOCKER_IMAGE_NAME)
-
-.PHONY: build-dev
-build-dev: | guard-VERSION venv metadata.yml runtime.yml install docker-compose.dev.yml ## build dev docker image
-	docker compose --env-file $(REPO_BASE_DIR)/.osparc/$(DOCKER_IMAGE_NAME)/.env --file $(REPO_BASE_DIR)/docker-compose.dev.yml --file $(REPO_BASE_DIR)/.osparc/$(DOCKER_IMAGE_NAME)/docker-compose.local.yml build $(DOCKER_IMAGE_NAME)

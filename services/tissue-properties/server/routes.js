@@ -36,11 +36,16 @@ function callInputRetriever(request, response) {
 }
 
 function getInputDir() {
-  const inputsDir = '../inputs/';
+  const inputsDir = '../input/';
   if (!fs.existsSync(inputsDir)) {
     fs.mkdirSync(inputsDir);
   }
-  return inputsDir;
+  const port = "input_1/";
+  const inputsDirPort = inputsDir + port;
+  if (!fs.existsSync(inputsDirPort)) {
+    fs.mkdirSync(inputsDirPort);
+  }
+  return inputsDirPort;
 }
 
 function getOutputDir() {

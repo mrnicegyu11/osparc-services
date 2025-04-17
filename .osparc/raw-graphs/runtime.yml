@@ -20,9 +20,8 @@ compose-spec:
   version: "3.7"
   services:
     raw-graphs:
-      image: $${SIMCORE_REGISTRY}/simcore/services/dynamic/tissue-properties:$${SERVICE_VERSION}
+      image: $${SIMCORE_REGISTRY}/simcore/services/dynamic/raw-graphs:$${SERVICE_VERSION}
       environment:
         SIMCORE_NODE_BASEPATH: "${SIMCORE_NODE_BASEPATH}"
-        TISSUEPROPS_INPUT_PATH: "${TISSUEPROPS_INPUT_PATH}"
-        TISSUEPROPS_OUTPUT_PATH: "${TISSUEPROPS_OUTPUT_PATH}"
+        RAWGRAPHS_INPUT_PATH: "${RAWGRAPHS_INPUT_PATH}"
 container-http-entrypoint: raw-graphs
