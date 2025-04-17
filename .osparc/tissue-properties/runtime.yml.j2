@@ -1,0 +1,35 @@
+{% if compose.services["tissue-properties"].build.labels["io.simcore.settings"] %}
+settings:
+{% for setting in compose.services["tissue-properties"].build.labels["io.simcore.settings"]  %}
+  - name: "{{ setting.name }}"
+    type: "{{ setting.type }}"
+    value:
+      {% if setting.value is mapping %}
+        {% for k, v in setting.value.items() %}
+      {{ k }}: {{ v }}
+        {% endfor %}
+      {% elif setting.value is iterable and not setting.value is string %}
+        {% for v in setting.value %}
+      - {{ v }}
+        {% endfor %}
+      {% else %}
+      {{ setting.value }}
+      {% endif %}
+{% endfor %}
+{% else %}
+settings: []
+{% endif %}
+paths-mapping: #VERY
+  outputs_path: "/home/scu/output"
+  inputs_path: "/home/scu/input"
+  state_paths: []
+compose-spec:
+  version: "3.7"
+  services:
+    tissue-properties:
+      image: $${SIMCORE_REGISTRY}/simcore/services/dynamic/tissue-properties:$${SERVICE_VERSION}
+      environment:
+        {% for key, value in compose.services["tissue-properties"].environment.items() %}
+        {{ key }}: "{{ value | replace('$${', '{{ ') | replace('}', '}') }}"
+        {% endfor %}
+container-http-entrypoint: tissue-properties

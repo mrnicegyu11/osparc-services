@@ -29,10 +29,10 @@ RUN apk add --no-cache --virtual .build-deps \
     git \
     python3-dev \
     postgresql-dev && \
-    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@master#subdirectory=packages/service-library &&\
-    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@master#subdirectory=packages/simcore-sdk &&\
-    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@master#subdirectory=services/storage/client-sdk/python &&\
-    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@master#subdirectory=packages/postgres-database &&\
+    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@4159b895fc1e3743777aadb79f1209735582cfab#subdirectory=packages/service-library &&\
+    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@4159b895fc1e3743777aadb79f1209735582cfab#subdirectory=packages/simcore-sdk &&\
+    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@4159b895fc1e3743777aadb79f1209735582cfab#subdirectory=services/storage/client-sdk/python &&\
+    pip install --no-cache-dir git+https://github.com/ITISFoundation/osparc-simcore.git@4159b895fc1e3743777aadb79f1209735582cfab#subdirectory=packages/postgres-database &&\
     apk del --no-cache .build-deps
 
 
@@ -57,9 +57,9 @@ ENV SIMCORE_NODE_UUID="-1" \
 #-----------------Production----------------------
 FROM base AS production
 
-COPY --chown=scu:scu services/dy-tissue-properties/csv-to-html-table $HOME/csv-to-html-table
-COPY --chown=scu:scu services/dy-tissue-properties/inputs $HOME/inputs
-COPY --chown=scu:scu services/dy-tissue-properties/inputs/TissueProperties.csv $HOME/csv-to-html-table/data/TissueProperties.csv
+COPY --chown=scu:scu services/tissue-properties/csv-to-html-table $HOME/csv-to-html-table
+COPY --chown=scu:scu services/tissue-properties/inputs $HOME/inputs
+COPY --chown=scu:scu services/tissue-properties/inputs/TissueProperties.csv $HOME/csv-to-html-table/data/TissueProperties.csv
 
 RUN apk add --no-cache \
     postgresql-libs
@@ -70,8 +70,8 @@ COPY --chown=scu:scu scripts/docker/healthcheck.py $HOME/healthcheck/healthcheck
 HEALTHCHECK --interval=10s --timeout=30s --start-period=1s --retries=3 CMD [ "python3", "/home/scu/healthcheck/healthcheck.py", "http://localhost:4000" ]
 
 WORKDIR $HOME
-COPY --chown=scu:scu services/dy-tissue-properties/docker $HOME/docker
-COPY --chown=scu:scu services/dy-tissue-properties/server $HOME/server
+COPY --chown=scu:scu services/tissue-properties/docker $HOME/docker
+COPY --chown=scu:scu services/tissue-properties/server $HOME/server
 
 WORKDIR $HOME/csv-to-html-table
 CMD ["/bin/bash", "../docker/boot.sh"]

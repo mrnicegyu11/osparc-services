@@ -4,7 +4,7 @@ services:
     image: ${DOCKER_REGISTRY}/tissue-properties:${DOCKER_IMAGE_TAG}
     build:
       context: ../../
-      dockerfile: services/dy-tissue-properties/Dockerfile
+      dockerfile: services/tissue-properties/Dockerfile
       target: production
       labels:
         io.simcore.key: '{"key": "simcore/services/dynamic/tissue-properties"}'

@@ -1,0 +1,6 @@
+services:
+  "tissue-properties":
+    build:
+      context: .
+      dockerfile: .osparc/tissue-properties/Dockerfile
+      target: production #WOW

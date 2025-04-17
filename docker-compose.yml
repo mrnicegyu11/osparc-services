@@ -1,0 +1,42 @@
+version: '3.7'
+services:
+  tissue-properties:
+    build:
+      context: .
+      dockerfile: .osparc/tissue-properties/Dockerfile
+      labels:
+        io.simcore.name: '{"name":"Tissue properties"}'
+        io.simcore.description: "{\"description\":\"Tissue properties compiled in\
+          \ an extensive, critical literature review by the ITIS Foundation. Visit\
+          \ [itis.swiss/database](https://itis.swiss/database) for additional information,\
+          \ e.g., on tissue parameter variability/uncertainty, quality assurance,\
+          \ and the explored sources. Please use the following citation when referring\
+          \ to the database: Hasgall PA, Di Gennaro F, Baumgartner C, Neufeld E, Lloyd\
+          \ B, Gosselin MC, Payne D, Klingenb\xF6ck A, Kuster N, ITIS Database for\
+          \ thermal and electromagnetic parameters of biological tissues, Version\
+          \ 4.0, May 15, 2018, DOI: 10.13099/VIP21000-04-0. [itis.swiss/database](https://itis.swiss/database).\
+          \ Powered by [csv-to-html-table](https://github.com/derekeder/csv-to-html-table)\"\
+          }"
+        io.simcore.version_display: '{"version_display":"3.4.5"}'
+        io.simcore.key: '{"key":"simcore/services/dynamic/tissue-properties"}'
+        io.simcore.version: '{"version":"3.4.5"}'
+        io.simcore.integration-version: '{"integration-version":"2.0.0"}'
+        io.simcore.type: '{"type":"dynamic"}'
+        io.simcore.authors: '{"authors":[{"name":"odeimaiz","email":"maiz@itis.swiss","affiliation":"ITIS
+          Foundation"}]}'
+        io.simcore.contact: '{"contact":"maiz@itis.swiss"}'
+        io.simcore.inputs: '{"inputs":{}}'
+        io.simcore.outputs: '{"outputs":{"output_1":{"displayOrder":0.0,"label":"Tissue
+          Properties","description":"Input data csv","type":"data:text/csv","fileToKeyMap":{"input.csv":"output_1"}}}}'
+        io.simcore.boot-options: '{"boot-options":{"boot_mode":{"label":"Boot mode","description":"Boot
+          mode","default":"0","items":{"0":{"label":"default","description":"default"}}}}}'
+        org.label-schema.build-date: 2025-04-17T08:03:39+0000
+        org.label-schema.schema-version: '1.0'
+        org.label-schema.vcs-ref: 29b389ffb4ec2072b9217053ccac3a63d6792d8d
+        org.label-schema.vcs-url: git@github.com:mrnicegyu11/osparc-services.git
+        simcore.service.compose-spec: '{"version":"3.7","services":{"tissue-properties":{"environment":{"SIMCORE_NODE_BASEPATH":"${SIMCORE_NODE_BASEPATH}","TISSUEPROPS_INPUT_PATH":"${TISSUEPROPS_INPUT_PATH}","TISSUEPROPS_OUTPUT_PATH":"${TISSUEPROPS_OUTPUT_PATH}"},"image":"$${SIMCORE_REGISTRY}/simcore/services/dynamic/tissue-properties:$${SERVICE_VERSION}"}}}'
+        simcore.service.container-http-entrypoint: tissue-properties
+        simcore.service.paths-mapping: '{"inputs_path":"/home/scu/input","outputs_path":"/home/scu/output","state_paths":[]}'
+        simcore.service.settings: '[]'
+      target: production
+    image: simcore/services/dynamic/tissue-properties:3.4.5
