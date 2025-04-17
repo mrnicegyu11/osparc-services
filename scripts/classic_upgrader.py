@@ -58,7 +58,7 @@ class BuildConfig(BaseModel):
 class EnhancedService(BaseModel):
     image: str
     build: BuildConfig
-    environment: dict[str, str]
+    environment: dict[str, str] = Field(default={})
     ports: list[str]
     
     @field_validator('environment', mode='before')

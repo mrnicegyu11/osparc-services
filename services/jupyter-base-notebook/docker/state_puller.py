@@ -25,18 +25,8 @@ class ExitCode(IntEnum):
 
 
 async def pull_file_if_exists(path: Path) -> None:
-    """
-    If the path already exist in storage pull it. Otherwise it is assumed
-    this is the first time the service starts.
-
-    In each and every other case an error is raised and logged
-    """
-    if not await data_manager.is_file_present_in_storage(path):
-        log.info("File '%s' is not present in storage service, will skip.", str(path))
-        return
-
-    await data_manager.pull(path)
-    log.info("Finished pulling and extracting %s", str(path))
+    log.info("noop pull_file_if_exists")
+    return
 
 
 def main(args=None) -> int:

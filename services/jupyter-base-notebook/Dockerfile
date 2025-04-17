@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=jupyter/base-notebook
+ARG BASE_IMAGE=jupyter/base-notebook:notebook-6.2.0
 FROM ${BASE_IMAGE}  AS base
 
 LABEL maintainer="sanderegg"
@@ -72,7 +72,7 @@ VOLUME /home/root/scripts/dy_services_helpers
 VOLUME /home/jovyan/docker
 VOLUME /home/jovyan/handlers
 # increase development speed by pre-installing libraries
-COPY --chown=jovyan:users services/dy-jupyter/devel/requirements.txt /home/jovyan/devel/requirements.txt
+COPY --chown=jovyan:users services/jupyter-base-notebook/devel/requirements.txt /home/jovyan/devel/requirements.txt
 RUN pip install -r /home/jovyan/devel/requirements.txt
 ENV CREATE_DUMMY_TABLE=1
 ENV USE_CASE_CONFIG_FILE="devel/port_config.json"
@@ -83,11 +83,11 @@ CMD [ "/bin/bash", "/docker/boot.sh" ]
 # ----------------------------------------------------------------
 FROM base AS production
 # prepare for booting
-COPY --chown=jovyan:users services/dy-jupyter/docker /docker
+COPY --chown=jovyan:users services/jupyter-base-notebook/docker /docker
 # install simcore packages. docker seems to set root:root permission to the implicitely created destination folders
-COPY --chown=jovyan:users services/dy-jupyter/handlers/* /home/jovyan/handlers/
+COPY --chown=jovyan:users services/jupyter-base-notebook/handlers/* /home/jovyan/handlers/
 # copy the default notebook
-COPY --chown=jovyan:users services/dy-jupyter/notebooks /home/jovyan/notebooks
+COPY --chown=jovyan:users services/jupyter-base-notebook/notebooks /home/jovyan/notebooks
 # cleanup
 RUN rm -rf /home/jovyan/packages && \
     rm -rf /home/jovyan/services
