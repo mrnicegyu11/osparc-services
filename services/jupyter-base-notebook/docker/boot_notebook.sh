@@ -9,13 +9,8 @@ echo "current directory is ${PWD}"
 # create output folder
 echo
 echo "creating inputs/outputs folder"
-mkdir -p "${INPUTS_FOLDER:-~/inputs}"
-mkdir -p "${OUTPUTS_FOLDER:-~/outputs}"
-
-# try to pull data from S3
-echo
-echo "trying to restore state..."
-python /docker/state_puller.py "${SIMCORE_NODE_APP_STATE_PATH}"
+mkdir -p "${INPUTS_FOLDER}" # must match dy-sidecar state-paths-whatever
+mkdir -p "${OUTPUTS_FOLDER}" # must match dy-sidecar state-paths-whatever
 
 # the notebooks in the folder shall be trusted by default
 # jupyter trust ${SIMCORE_NODE_APP_STATE_PATH}/*
@@ -23,7 +18,7 @@ python /docker/state_puller.py "${SIMCORE_NODE_APP_STATE_PATH}"
 # Trust all notebooks in the notbooks folder
 echo
 echo "trust all notebooks in path..."
-find "${SIMCORE_NODE_APP_STATE_PATH}" -name '*.ipynb' -exec jupyter trust {} \;
+find "/home/jovyan/notebooks" -name '*.ipynb' -exec jupyter trust {} \;
 
 # prevents notebook to open in separate tab
 cat > ~/.jupyter/custom/custom.js <<EOF
@@ -41,21 +36,14 @@ cat > jupyter_config.json <<EOF
         "port": 8888,
         "base_url": "${SIMCORE_NODE_BASEPATH}",
         "extra_static_paths": ["${SIMCORE_NODE_BASEPATH}/static"],
-        "notebook_dir": "${SIMCORE_NODE_APP_STATE_PATH}",
+        "notebook_dir": "/home/jovyan/notebooks",
         "token": "",
         "quit_button": false,
         "open_browser": false,
         "webbrowser_open_new": 0,
-        "disable_check_xsrf": true,
-        "nbserver_extensions": {
-            "retrieve": true,
-            "push": true,
-            "state": true
-        }
+        "disable_check_xsrf": true
     },
     "FileContentsManager": {
-        "post_save_hook": "post_save_hook.export_to_osparc_hook",
-        "delete_to_trash": false
     },
     "Session": {
         "debug": false

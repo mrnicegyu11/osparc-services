@@ -15,10 +15,4 @@ paths-mapping: # Watch this carefully and potentially adjust
   outputs_path: "/home/jovyan/outputs"
   inputs_path: "/home/jovyan/inputs"
   state_paths: ["/home/jovyan/notebooks"]
-compose-spec:
-  version: "3.7"
-  services:
-    raw-graphs:
-      image: $${SIMCORE_REGISTRY}/simcore/services/dynamic/jupyter-base-notebook:$${SERVICE_VERSION}
-      environment:
-container-http-entrypoint: raw-graphs
+

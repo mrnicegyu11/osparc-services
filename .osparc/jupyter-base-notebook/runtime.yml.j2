@@ -23,13 +23,15 @@ paths-mapping: # Watch this carefully and potentially adjust
   outputs_path: "/home/jovyan/outputs"
   inputs_path: "/home/jovyan/inputs"
   state_paths: ["/home/jovyan/notebooks"]
+{% if compose.services[service_name].environment.items() %}
 compose-spec:
   version: "3.7"
   services:
-    raw-graphs:
+    {{ service_name }}:
       image: $${SIMCORE_REGISTRY}/simcore/services/dynamic/{{ service_name }}:$${SERVICE_VERSION}
       environment:
         {% for key, value in compose.services[service_name].environment.items() %}
         {{ key }}: "{{ value | replace('$${', '{{ ') | replace('}', '}') }}"
         {% endfor %}
-container-http-entrypoint: raw-graphs
+container-http-entrypoint: {{ service_name }}
+{% endif %}

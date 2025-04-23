@@ -26,10 +26,10 @@ paths-mapping: # Watch this carefully and potentially adjust
 compose-spec:
   version: "3.7"
   services:
-    raw-graphs:
+    {{ service_name }}:
       image: $${SIMCORE_REGISTRY}/simcore/services/dynamic/{{ service_name }}:$${SERVICE_VERSION}
       environment:
         {% for key, value in compose.services[service_name].environment.items() %}
         {{ key }}: "{{ value | replace('$${', '{{ ') | replace('}', '}') }}"
         {% endfor %}
-container-http-entrypoint: raw-graphs
+container-http-entrypoint: {{ service_name }}

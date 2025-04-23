@@ -5,9 +5,6 @@ from pathlib import Path
 from notebook.base.handlers import IPythonHandler
 from notebook.utils import url_path_join
 
-from simcore_sdk.node_ports import exceptions
-from simcore_sdk.node_data import data_manager
-
 log = logging.getLogger(__name__)
 
 _STATE_PATH = os.environ.get("SIMCORE_NODE_APP_STATE_PATH", "undefined")
@@ -22,31 +19,10 @@ class StateHandler(IPythonHandler):
         pass
 
     async def post(self):
-        log.info("started pushing current state to S3...")
-        try:
-            await data_manager.push(_state_path())
-            self.set_status(204)
-        except exceptions.NodeportsException as exc:
-            log.exception("Unexpected error while pushing state")
-            self.set_status(500, reason=str(exc))
-        finally:
-            self.finish()
+        pass
 
     async def get(self):
-        log.info("started pulling state to S3...")
-        try:
-            await data_manager.pull(_state_path())
-            self.set_status(204)
-        except exceptions.S3InvalidPathError as exc:
-            log.exception("Invalid path to S3 while retrieving state")
-            self.set_status(404, reason=str(exc))
-        except exceptions.NodeportsException as exc:
-            log.exception("Unexpected error while retrieving state")
-            self.set_status(500, reason=str(exc))
-        finally:
-            self.finish('completed pulling state')
-
-
+        pass
 
 def load_jupyter_server_extension(nb_server_app):
     """ Called when the extension is loaded
