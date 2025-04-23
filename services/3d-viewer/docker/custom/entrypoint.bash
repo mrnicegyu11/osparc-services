@@ -51,7 +51,7 @@ echo "setting up visualizer options..."
 visualizer_options=(--content /opt/paraview/share/paraview-5.6/web/visualizer/www/ \
                     --data "${PARAVIEW_INPUT_PATH}" \
                     --host 0.0.0.0"${SIMCORE_NODE_BASEPATH}" \
-                    --port "${SERVER_PORT}" \
+                    --port "80" \
                     # --ws-endpoint ${SIMCORE_NODE_BASEPATH}/ws \
                     --timeout 20000 \
                     --no-built-in-palette \

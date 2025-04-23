@@ -18,7 +18,7 @@ services:
       - SIMCORE_NODE_BASEPATH=${SIMCORE_NODE_BASEPATH}
       - SIMCORE_HOST_NAME=${SIMCORE_HOST_NAME}
       - TEST_DATA_PATH=/home/root/test-data
-      - SERVER_PORT=${SERVER_PORT}
+      - SERVER_PORT=80
       - PARAVIEW_DEBUG=${PARAVIEW_DEBUG}
     depends_on:
       - postgres
@@ -38,7 +38,7 @@ services:
       labels:
         - traefik.enable=true
         - traefik.docker.network=3d-viewer_default
-        - traefik.http.services.3d-viewer.loadbalancer.server.port=${SERVER_PORT}
+        - traefik.http.services.3d-viewer.loadbalancer.server.port=80
         - traefik.http.routers.3d-viewer.rule=hostregexp(`{host:.+}`) && PathPrefix(`${SIMCORE_NODE_BASEPATH}`)
         - traefik.http.routers.3d-viewer.entrypoints=http
         # the stipprefixregex is necessary
