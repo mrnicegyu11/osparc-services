@@ -6,8 +6,8 @@ WORKDIR /home/node
 ARG VISUALIZER_VERSION=v3.1.10
 RUN git clone --branch ${VISUALIZER_VERSION} https://github.com/Kitware/visualizer.git
 WORKDIR /home/node/visualizer
-COPY services/3d-viewer/src/3d-viewer/rebrand-osparc/to-be-copied .
-COPY services/3d-viewer/src/3d-viewer/rebrand-osparc/rebrand-osparc.patch rebrand-osparc.patch
+COPY services/3d-viewer-gpu/src/3d-viewer/rebrand-osparc/to-be-copied .
+COPY services/3d-viewer-gpu/src/3d-viewer/rebrand-osparc/rebrand-osparc.patch rebrand-osparc.patch
 RUN git apply rebrand-osparc.patch && \
     npm install && \
     npm run build:release && \
@@ -84,10 +84,10 @@ FROM common AS production
 # will start to run after interval every interval. fails after timeout. fail do not count if during start-period. will do # retries
 HEALTHCHECK --interval=10s --timeout=30s --start-period=1s --retries=3 CMD [ "python3", "/home/root/docker/healthcheck_curl_host.py", "http://localhost", "/" ]
 # copy scripts
-COPY services/3d-viewer/docker/custom /home/root/docker
-COPY services/3d-viewer/src/3d-viewer/utils /home/root/utils
-COPY services/3d-viewer/src/3d-viewer/config /home/root/config
-COPY services/3d-viewer/src/3d-viewer/handlers/*.rpy /opt/paraview/share/paraview-5.6/web/visualizer/www/
+COPY services/3d-viewer-gpu/docker/custom /home/root/docker
+COPY services/3d-viewer-gpu/src/3d-viewer/utils /home/root/utils
+COPY services/3d-viewer-gpu/src/3d-viewer/config /home/root/config
+COPY services/3d-viewer-gpu/src/3d-viewer/handlers/*.rpy /opt/paraview/share/paraview-5.6/web/visualizer/www/
 
 ENTRYPOINT [ "/bin/bash", "docker/entrypoint.bash" ]
 #------------------------------------------
