@@ -5,7 +5,9 @@ LABEL maintainer="sanderegg"
 EXPOSE 8888
 
 USER root
-
+ENV NB_UID=8004
+ENV NB_GID=100
+RUN usermod  -u $NB_UID $NB_USER
 RUN apt-get update &&\
     apt-get install -y \
     git \
