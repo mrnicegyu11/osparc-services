@@ -19,10 +19,10 @@ paths-mapping: # Watch this carefully and potentially adjust
 compose-spec:
   version: "3.7"
   services:
-    raw-graphs:
+    tissue-properties:
       image: $${SIMCORE_REGISTRY}/simcore/services/dynamic/tissue-properties:$${SERVICE_VERSION}
       environment:
         SIMCORE_NODE_BASEPATH: "${SIMCORE_NODE_BASEPATH}"
         TISSUEPROPS_INPUT_PATH: "${TISSUEPROPS_INPUT_PATH}"
         TISSUEPROPS_OUTPUT_PATH: "${TISSUEPROPS_OUTPUT_PATH}"
-container-http-entrypoint: raw-graphs
+container-http-entrypoint: tissue-properties
