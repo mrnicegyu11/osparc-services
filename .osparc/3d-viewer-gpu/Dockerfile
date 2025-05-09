@@ -1,5 +1,5 @@
 # this must be the first line
-ARG BASE_IMAGE=kitware/paraviewweb:pv-v5.6.0-osmesa
+ARG BASE_IMAGE=kitware/paraviewweb:pv-v5.6.0-egl
 # apply patch to visualizer
 FROM node:8.12.0 AS visualizer
 WORKDIR /home/node
@@ -29,6 +29,7 @@ RUN apt-get update && \
 
 # install python 3.6 for root and also for www-data
 ENV PYENV_ROOT=/pyenv
+ENV NVIDIA_DRIVER_CAPABILITIES=all
 # necessary to prevent some dependencies to ask questions while installing
 ENV DEBIAN_FRONTEND=noninteractive
 RUN curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash && \
