@@ -18,7 +18,7 @@ RUN git apply rebrand-osparc.patch && \
 FROM ${BASE_IMAGE} AS common
 
 LABEL maintainer="sanderegg"
-ENV PARAVIEW_INPUT_PATH="/data"
+ENV PARAVIEW_INPUT_PATH="/data/A"
 
 USER root
 # install git, pip
