@@ -56,20 +56,6 @@ COPY --from=visualizer /home/node/visualizer/dist /opt/paraview/share/paraview-5
 WORKDIR /home/root
 # ----------------------------------------------------------------
 # set up oSparc env variables
-ENV SIMCORE_NODE_UUID="-1" \
-    SIMCORE_USER_ID="-1" \
-    SIMCORE_NODE_BASEPATH="" \
-    SIMCORE_NODE_APP_STATE_PATH=${PARAVIEW_INPUT_PATH} \
-    SIMCORE_HOST_NAME="localhost" \
-    STORAGE_ENDPOINT="=1" \
-    S3_ENDPOINT="=1" \
-    S3_ACCESS_KEY="-1" \
-    S3_SECRET_KEY="-1" \
-    S3_BUCKET_NAME="-1" \
-    POSTGRES_ENDPOINT="-1" \
-    POSTGRES_USER="-1" \
-    POSTGRES_PASSWORD="-1" \
-    POSTGRES_DB="-1"
 COPY services/3d-viewer-gpu/data /data_baked
 # special paraview variables
 ENV SERVER_PORT="80"  \
