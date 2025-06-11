@@ -4,7 +4,6 @@ description: "Paraview Web-based Visualizer"
 key: simcore/services/dynamic/3d-viewer-gpu
 version: 3.0.5
 integration-version: 2.0.0
-version_display: 3.0.5
 type: dynamic
 authors:
   - name: "Sylvain Anderegg"
