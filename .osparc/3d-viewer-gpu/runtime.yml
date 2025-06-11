@@ -16,10 +16,3 @@ paths-mapping: # Watch this carefully and potentially adjust
   outputs_path: "/home/scu/output"
   inputs_path: "/data/"
   state_paths: []
-compose-spec:
-  version: "3.7"
-  services:
-    3d-viewer-gpu:
-      image: $$$${SIMCORE_REGISTRY}/simcore/services/dynamic/3d-viewer-gpu:$$$${SERVICE_VERSION}
-      environment:
-container-http-entrypoint: 3d-viewer-gpu
