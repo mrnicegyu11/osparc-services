@@ -9,6 +9,9 @@ authors:
   - name: "Sylvain Anderegg"
     email: "anderegg@itis.swiss"
     affiliation: "IT'IS Foundation"
+  - name: "Dustin Kaiser"
+    email: "kaiser@itis.swiss"
+    affiliation: "IT'IS Foundation"
 contact: anderegg@itis.swiss
 inputs:
   A:

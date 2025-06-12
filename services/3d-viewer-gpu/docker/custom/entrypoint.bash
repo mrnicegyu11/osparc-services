@@ -42,7 +42,7 @@ docker/patch_paraview.bash
 echo
 echo "setting up visualizer options..."
 visualizer_options=(--content /opt/paraview/share/paraview-5.6/web/visualizer/www/ \
-                    --host 0.0.0.0"${SIMCORE_NODE_BASEPATH}" \
+                    --host 0.0.0.0 \
                     --port "80" \
                     --timeout 20000 \
                     --no-built-in-palette \
@@ -103,7 +103,7 @@ fi
 
 # start server
 echo
-echo "starting paraview on ${SIMCORE_HOST_NAME}${SIMCORE_NODE_BASEPATH}..."
+echo "starting paraview on localhost..."
 echo "using " "${visualizer_options[@]}"
 /opt/paraview/bin/pvpython -dr --mpi \
     /opt/paraview/share/paraview-5.6/web/visualizer/server/pvw-visualizer.py "${visualizer_options[@]}"

@@ -15,6 +15,7 @@ services:
         io.simcore.integration-version: '{"integration-version":"2.0.0"}'
         io.simcore.type: '{"type":"dynamic"}'
         io.simcore.authors: '{"authors":[{"name":"Sylvain Anderegg","email":"anderegg@itis.swiss","affiliation":"IT''IS
+          Foundation"},{"name":"Dustin Kaiser","email":"kaiser@itis.swiss","affiliation":"IT''IS
           Foundation"}]}'
         io.simcore.contact: '{"contact":"anderegg@itis.swiss"}'
         io.simcore.inputs: '{"inputs":{"A":{"displayOrder":1.0,"label":"A","description":"Any
@@ -27,9 +28,9 @@ services:
           mode","default":"0","items":{"0":{"label":"default","description":"default"},"1":{"label":"3DAnatomical","description":"Preload
           3DAnatomical data"},"2":{"label":"3DEM","description":"Preload 3DEM data"},"3":{"label":"NeurofaunaRat","description":"Preload
           NeurofaunaRat data"}}}}}'
-        org.label-schema.build-date: 2025-06-12T07:27:01+0000
+        org.label-schema.build-date: 2025-06-12T08:10:48+0000
         org.label-schema.schema-version: '1.0'
-        org.label-schema.vcs-ref: 3c986858a222d4a7cd640d99e6b3294873df2f32
+        org.label-schema.vcs-ref: 231d2479293208cb1c4a2b435453355fb24f27ba
         org.label-schema.vcs-url: git@github.com:mrnicegyu11/osparc-services.git
         simcore.service.paths-mapping: '{"inputs_path":"/data","outputs_path":"/home/scu/output","state_paths":[]}'
         simcore.service.settings: '[{"name":"ports","type":"int","value":80},{"name":"constraints","type":"string","value":["node.platform.os
