@@ -17,7 +17,7 @@ RUN git apply rebrand-osparc.patch && \
 # build visualizer service
 FROM ${BASE_IMAGE} AS common
 
-LABEL maintainer="sanderegg"
+LABEL maintainer="kaiser"
 
 
 USER root
@@ -72,9 +72,7 @@ FROM common AS production
 HEALTHCHECK --interval=10s --timeout=30s --start-period=1s --retries=3 CMD [ "python3", "/home/root/docker/healthcheck_curl_host.py", "http://localhost", "/" ]
 # copy scripts
 COPY services/3d-viewer-gpu/docker/custom /home/root/docker
-COPY services/3d-viewer-gpu/src/3d-viewer/utils /home/root/utils
 COPY services/3d-viewer-gpu/src/3d-viewer/config /home/root/config
-COPY services/3d-viewer-gpu/src/3d-viewer/handlers/*.rpy /opt/paraview/share/paraview-5.6/web/visualizer/www/
 
 ENTRYPOINT [ "/bin/bash", "docker/entrypoint.bash" ]
 #------------------------------------------
