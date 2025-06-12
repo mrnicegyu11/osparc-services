@@ -62,12 +62,13 @@ fi
 
 if [ "${DY_BOOT_OPTION_BOOT_MODE}" -eq "0" ]; then
     set -e
-    export PARAVIEW_INPUT_PATH=/data_baked/
+    export PARAVIEW_INPUT_PATH=/data/A
     set +e
     echo
     echo "setting input folder as data folder --> --data PARAVIEW_INPUT_PATH: ${PARAVIEW_INPUT_PATH}"
     echo "INFO: In the dy-sidecars inputs might be pulled after the entrypoint.sh is executed. Inputs might not be present when the binary of paraview is executed."
     visualizer_options+=(--data "${PARAVIEW_INPUT_PATH}")
+    visualizer_options+=(--load-file "${SIMCORE_STATE_FILE}")
 elif [ "${DY_BOOT_OPTION_BOOT_MODE}" -eq "1" ] && [ -f /data_baked/3Danatomical/"${SIMCORE_STATE_FILE}" ]; then
     set -e
     export PARAVIEW_INPUT_PATH=/data_baked/3Danatomical/
@@ -96,9 +97,10 @@ else
     echo
     echo "WARNING: INVALID BOOTMODE: {${DY_BOOT_OPTION_BOOT_MODE}}. FALLING BACK TO DEFAULTS."
     set -e
-    export PARAVIEW_INPUT_PATH=/data_baked/
+    export PARAVIEW_INPUT_PATH=/data/A
     set +e
     visualizer_options+=(--data "${PARAVIEW_INPUT_PATH}")
+    visualizer_options+=(--load-file "${SIMCORE_STATE_FILE}")
 fi
 
 # start server
